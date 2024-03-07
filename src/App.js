@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import * as BooksAPI from './BookAPI';
 import BookShelf from "./components/BookShelf";
+import { Route, Routes } from "react-router-dom";
+import Search from "./components/Search";
 
 const App = () => {
 
@@ -35,15 +37,21 @@ const App = () => {
 
   return (
     <div className="app">
-      {shelves.map((shelf) => (
-        <BookShelf 
-          key={shelf.key}
-          title={shelf.name}
-          booksOnShelf={books.filter(book => book.shelf === shelf.key)}
-          moveBook={moveBook}
-          // books={books.filter(book => book.shelf === shelf.key)}
-        />
-      ))}
+      <Routes>
+        <Route exact path="/" element={
+          <div>
+            {shelves.map((shelf) => (
+              <BookShelf 
+                key={shelf.key}
+                title={shelf.name}
+                booksOnShelf={books.filter(book => book.shelf === shelf.key)}
+                moveBook={moveBook}
+              />
+            ))}
+          </div>
+        } />
+        <Route path="/search" element={<Search/>}/>
+      </Routes>
     </div>
   );
 }
