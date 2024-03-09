@@ -7,7 +7,6 @@ import Search from "./components/Search";
 
 const App = () => {
   const [books, setBooks] = useState([]); // Empty array...
-  // const [showSearchPage, setShowSearchpage] = useState(false);
 
   const shelves = [
     { key: "currentlyReading", name: "Currently Reading" },
@@ -17,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     BooksAPI.getAll().then((books) => {
+      console.log(books);
       setBooks(books);
     });
   }, []);
@@ -59,7 +59,7 @@ const App = () => {
                 </div>
               }
             />
-            <Route path="/search" element={<Search moveBook={moveBook}/>} />
+            <Route path="/search" element={<Search moveBook={moveBook} booksOnShelves={books} />} />
           </Routes>
         </div>
         <div className="open-search">

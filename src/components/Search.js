@@ -1,23 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import * as BooksAPI from '../BookAPI';
 import Book from "./Book";
 
-const Search = ({moveBook}) => {
+const Search = ({booksOnShelves, moveBook}) => {
     const [booksFetched, setBooksFetched] = useState([]);
+    
     const searchBook = (e) => {
-        // alert(e.target.value);
-        BooksAPI.search(e.target.value).then((books) => {
-            console.log(books);
-            if(books && books.length > 0)
-                setBooksFetched(books);
-            else
+        const query = e.target.value.trim();
+        if (query) {
+            BooksAPI.search(query).then((searchResults) => {
+                if (searchResults.error) {
+                    setBooksFetched([]);
+                } else {
+                    /*
+                        Making sure the book's state (shelf) populates here. 
+                        If book is on shelf, get the value, and update here...
+                    */
+                    const integratedResults = searchResults.map((result) => {
+                        const bookOnShelf = booksOnShelves.find(book => book.id === result.id);
+                        result.shelf = bookOnShelf ? bookOnShelf.shelf : 'none';
+                        return result;
+                    });
+                    setBooksFetched(integratedResults);
+                }
+            }).catch((error) => {
+                console.log("Error occurred while searching books:", error);
                 setBooksFetched([]);
-        }).catch((error) => {
-            console.error("Error occurred while fetching books: ", error);
+            })
+        } else {
             setBooksFetched([]);
-        });
+        }
     }
 
     return (
@@ -36,15 +49,15 @@ const Search = ({moveBook}) => {
             </div>
             <div className="search-books-results">
                 <ol className="books-grid">
-                    <li>
-                        {booksFetched.map((book) => (
+                    {booksFetched.map((book, index) => (
+                        <li key={index}>
                             <Book 
                                 key={book.id}
                                 book={book}
                                 onMoveBook={moveBook}
                             />
-                        ))}
-                    </li>
+                        </li>
+                    ))}
                 </ol>
             </div>    
         </div>

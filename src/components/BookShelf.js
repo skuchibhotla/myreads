@@ -8,15 +8,15 @@ const BookShelf = ({title, booksOnShelf, moveBook}) => {
         <h2 className="bookshelf-title">{title}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            <li>
-              {booksOnShelf.map((book) => (
+            {booksOnShelf && booksOnShelf.map((book, index) => (
+              <li key={index}>
                 <Book 
                   key={book.id}
                   book={book}
                   onMoveBook={moveBook}
                 />
-              ))}
-            </li>
+              </li>
+            ))}
           </ol>
         </div>
       </div>
