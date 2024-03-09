@@ -41,7 +41,7 @@ const Search = ({booksOnShelves, moveBook}) => {
                     <div className="search-books-input-wrapper">
                     <input
                         type="text"
-                        placeholder="Search by title, author, or ISBN"
+                        placeholder="Search by title..."
                         onKeyUp={(e) => searchBook(e)}
                     />
                     </div>
