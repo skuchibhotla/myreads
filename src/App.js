@@ -16,7 +16,6 @@ const App = () => {
 
   useEffect(() => {
     BooksAPI.getAll().then((books) => {
-      console.log(books);
       setBooks(books);
     });
   }, []);
